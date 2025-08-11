@@ -1,12 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/stylesheet/style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chat</title>
+    <link rel="stylesheet" href="/stylesheet/theme.css" />
+    <link rel="stylesheet" href="/stylesheet/style.css" />
+    <script src="/scripts/theme.js" defer></script>
 </head>
-<body>
-    <h1>Welcome <%= user.name %></h1>
+<body class="chat-app" data-theme="dark">
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar" aria-label="Sidebar">
+            <div class="sidebar__header">
+                <button class="icon-btn" id="sidebarClose" aria-label="Close sidebar" title="Close">
+                    <span class="icon">✕</span>
+                </button>
+                <a class="brand" href="/">ChatGPT</a>
+            </div>
+            <div class="sidebar__section">
+                <div class="sidebar__actions">
+                    <button id="newChatBtn" class="btn ghost block" title="Start a new chat">＋ New chat</button>
+                </div>
+                <div class="sidebar__section-title">Chats</div>
+                <ul class="chat-list" id="chatList">
+                    <li class="chat-list__item is-active">Welcome, <%= (user && user.name) ? user.name : 'Guest' %></li>
+                </ul>
+            </div>
+        </aside>
+
+        <div class="main">
+            <header class="topbar">
+                <button class="icon-btn" id="sidebarToggle" aria-label="Open sidebar" title="Open sidebar (Esc to close)">
+                    <span class="icon">☰</span>
+                </button>
+                <div class="topbar__title">ChatGPT</div>
+                <div class="topbar__spacer"></div>
+                <div class="topbar__actions">
+                    <a href="/auth/login" class="btn ghost small" title="Login">Login</a>
+                    <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌓</button>
+                </div>
+            </header>
+
+            <main class="content">
+                <section class="home-hero" id="homeHero">
+                    <h1 class="hero-title">Introducing GPT-5</h1>
+                    <p class="hero-sub">Our smartest, fastest model yet, with thinking built in—so you get the best answer, every time.</p>
+                    <div class="quick-actions">
+                        <button class="pill" data-prompt="Summarize this article in 3 bullet points." title="Create a tl;dr">Summarize an article</button>
+                        <button class="pill" data-prompt="Give me dinner ideas based on chicken and broccoli." title="Meal ideas">Plan dinner</button>
+                        <button class="pill" data-prompt="Write a friendly email to follow up on a job application." title="Email helper">Write an email</button>
+                        <button class="pill" data-prompt="Explain quantum computing like I'm 5." title="Explain simply">Explain a topic</button>
+                    </div>
+                </section>
+
+                <section class="thread" id="thread" aria-live="polite" aria-label="Conversation"></section>
+
+                <form class="composer" id="composer" autocomplete="off">
+                    <div class="composer__inner">
+                        <textarea id="promptInput" class="input" placeholder="Ask anything" rows="1" aria-label="Message input"></textarea>
+                        <button type="submit" class="send-btn" aria-label="Send">➤</button>
+                    </div>
+                    <div class="hint">Press Enter to send • Shift+Enter for a new line</div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <script src="/scripts/chat.js"></script>
 </body>
 </html>

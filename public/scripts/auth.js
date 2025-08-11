@@ -1,5 +1,10 @@
 // Small client-side UX: show password toggle, basic required checks, submit button loading
 (function () {
+  // Apply persisted theme for auth pages as well
+  try { window.Theme?.applySavedTheme(); } catch (_) {}
+  const themeBtn = document.getElementById('themeToggle');
+  themeBtn?.addEventListener('click', () => window.Theme?.toggleTheme());
+
   const forms = document.querySelectorAll('[data-auth-form]');
 
   forms.forEach((form) => {

@@ -1,12 +1,321 @@
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Satoshi', sans-serif;
-    box-sizing: border-box;
+/* Global reset tweaks */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-html , body{
-    height: 100%;
-    width: 100%;
-    background-color: black;
-    color: white;
+html,
+body {
+  height: 100%;
+}
+
+/* App shell */
+.chat-app {
+  background: var(--bg);
+  color: var(--text);
+}
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100svh;
+}
+
+/* Sidebar */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg);
+  border-right: var(--border);
+  padding: 12px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+}
+.sidebar__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  color: var(--text);
+}
+.icon-btn {
+  background: transparent;
+  border: var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: var(--text);
+  cursor: pointer;
+}
+#sidebarClose {
+  display: none;
+}
+.icon-btn .icon {
+  display: inline-block;
+}
+
+/* shortcuts removed for cleaner sidebar */
+
+.sidebar__section {
+  display: grid;
+  gap: 8px;
+}
+.sidebar__section-title {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0 6px;
+}
+.chat-list {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.chat-list__item {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+.chat-list__item.is-active {
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  border-color: color-mix(in oklab, var(--primary) 35%, transparent);
+}
+
+/* footer removed for cleaner sidebar */
+
+/* Sidebar responsive behavior */
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: fixed;
+    inset: 0;
+    width: min(86vw, 360px);
+    right: auto;
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 24px 0 60px rgba(2, 6, 23, 0.45);
+  }
+  .sidebar.is-open {
+    transform: translateX(0);
+  }
+  /* Clickable backdrop using the aside element itself */
+  .sidebar.is-open::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    left: calc(100% + 0px);
+    background: rgba(2, 6, 23, 0.6);
+    backdrop-filter: blur(2px);
+  }
+  #sidebarClose {
+    display: inline-flex;
+  }
+}
+
+/* Main area */
+.main {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  backdrop-filter: blur(8px);
+  border-bottom: var(--border);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+  z-index: 10;
+}
+.topbar__title {
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+@media (min-width: 901px) {
+  #sidebarToggle {
+    display: none;
+  }
+}
+
+.content {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+/* Hero section akin to screenshot */
+.home-hero {
+  display: grid;
+  align-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+.hero-title {
+  font-size: clamp(1.4rem, 1.1rem + 1.6vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+.hero-sub {
+  color: var(--muted);
+  max-width: 840px;
+  margin-inline: auto;
+}
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 6px;
+}
+.pill {
+  border: var(--border);
+  background: transparent;
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.pill:hover {
+  background: color-mix(in oklab, var(--text) 6%, transparent);
+}
+.home-hero.is-hidden {
+  display: none;
+}
+
+/* Thread */
+.thread {
+  display: grid;
+  gap: 12px;
+  padding: 10px 0 160px;
+  width: min(100% - 32px, 900px);
+  margin-inline: auto;
+}
+.msg {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  padding: 10px 12px;
+}
+.msg__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: var(--border);
+  background: color-mix(in oklab, var(--text) 4%, transparent);
+}
+.msg__content {
+  padding: 12px 14px;
+  border: var(--border);
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+}
+.msg__content p {
+  white-space: pre-wrap;
+}
+.msg--user .msg__content {
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  border-color: color-mix(in oklab, var(--primary) 30%, transparent);
+}
+
+/* Composer */
+.composer {
+  position: fixed;
+  left: 280px;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 14px;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2)),
+    transparent;
+}
+.composer__inner {
+  width: min(100% - 32px, 900px);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+  border: var(--border);
+  border-radius: 16px;
+  background: var(--input-bg);
+  padding: 8px;
+  box-shadow: var(--shadow);
+}
+textarea.input {
+  resize: none;
+  min-height: 44px;
+  max-height: 200px;
+  border: none;
+  background: transparent;
+}
+.send-btn {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.hint {
+  width: min(100% - 32px, 900px);
+  margin: 6px auto 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .composer {
+    left: 0;
+  }
+}
+
+/* Utilities */
+.hidden {
+  display: none !important;
+}
+
+/* Topbar actions and responsive tweaks */
+.topbar__spacer {
+  flex: 1;
+}
+.topbar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn.small {
+  padding: 8px 12px;
+  font-size: 0.95rem;
+}
+/* keep small buttons visible on all devices */
+.topbar__actions .btn.small { display: inline-flex; }
+
+/* Sidebar actions */
+.sidebar__actions {
+  padding: 0 6px;
 }
