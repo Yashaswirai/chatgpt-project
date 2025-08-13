@@ -5,6 +5,7 @@ const {
   postLoginController,
   getRegisterController,
   postRegisterController,
+  logOutController
 } = require("../controller/auth.controller");
 
 router
@@ -16,5 +17,7 @@ router
   .route("/register")
   .get(getRegisterController)
   .post(postRegisterController);
+
+router.get("/logout", logOutController);
 
 module.exports = router;

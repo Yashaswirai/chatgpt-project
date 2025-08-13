@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="/stylesheet/style.css" />
     <script src="/scripts/theme.js" defer></script>
 </head>
+
 <body class="chat-app" data-theme="dark">
     <div class="app-shell">
         <aside class="sidebar" id="sidebar" aria-label="Sidebar">
@@ -23,20 +25,27 @@
                 </div>
                 <div class="sidebar__section-title">Chats</div>
                 <ul class="chat-list" id="chatList">
-                    <li class="chat-list__item is-active">Welcome, <%= (user && user.name) ? user.name : 'Guest' %></li>
+                    <li class="chat-list__item is-active">Welcome, <%= (user && user.username) ? user.username : 'Guest'
+                            %>
+                    </li>
                 </ul>
             </div>
         </aside>
 
         <div class="main">
             <header class="topbar">
-                <button class="icon-btn" id="sidebarToggle" aria-label="Open sidebar" title="Open sidebar (Esc to close)">
+                <button class="icon-btn" id="sidebarToggle" aria-label="Open sidebar"
+                    title="Open sidebar (Esc to close)">
                     <span class="icon">☰</span>
                 </button>
                 <div class="topbar__title">ChatGPT</div>
                 <div class="topbar__spacer"></div>
                 <div class="topbar__actions">
-                    <a href="/auth/login" class="btn ghost small" title="Login">Login</a>
+                    <% if (user && user.username) { %>
+                        <form action="/auth/logout" method="get" style="display:inline">
+                            <button type="submit" class="btn ghost" id="logoutBtn" title="Log out" aria-label="Log out">Log out</button>
+                        </form>
+                    <% } %>
                     <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌓</button>
                 </div>
             </header>
@@ -44,12 +53,18 @@
             <main class="content">
                 <section class="home-hero" id="homeHero">
                     <h1 class="hero-title">Introducing GPT-5</h1>
-                    <p class="hero-sub">Our smartest, fastest model yet, with thinking built in—so you get the best answer, every time.</p>
+                    <p class="hero-sub">Our smartest, fastest model yet, with thinking built in—so you get the best
+                        answer, every time.</p>
+                    <!-- Quick Actions -->
                     <div class="quick-actions">
-                        <button class="pill" data-prompt="Summarize this article in 3 bullet points." title="Create a tl;dr">Summarize an article</button>
-                        <button class="pill" data-prompt="Give me dinner ideas based on chicken and broccoli." title="Meal ideas">Plan dinner</button>
-                        <button class="pill" data-prompt="Write a friendly email to follow up on a job application." title="Email helper">Write an email</button>
-                        <button class="pill" data-prompt="Explain quantum computing like I'm 5." title="Explain simply">Explain a topic</button>
+                        <button class="pill" data-prompt="Summarize this article in 3 bullet points."
+                            title="Create a tl;dr">Summarize an article</button>
+                        <button class="pill" data-prompt="Give me dinner ideas based on chicken and broccoli."
+                            title="Meal ideas">Plan dinner</button>
+                        <button class="pill" data-prompt="Write a friendly email to follow up on a job application."
+                            title="Email helper">Write an email</button>
+                        <button class="pill" data-prompt="Explain quantum computing like I'm 5."
+                            title="Explain simply">Explain a topic</button>
                     </div>
                 </section>
 
@@ -57,7 +72,8 @@
 
                 <form class="composer" id="composer" autocomplete="off">
                     <div class="composer__inner">
-                        <textarea id="promptInput" class="input" placeholder="Ask anything" rows="1" aria-label="Message input"></textarea>
+                        <textarea id="promptInput" class="input" placeholder="Ask anything" rows="1"
+                            aria-label="Message input"></textarea>
                         <button type="submit" class="send-btn" aria-label="Send">➤</button>
                     </div>
                     <div class="hint">Press Enter to send • Shift+Enter for a new line</div>
@@ -65,7 +81,12 @@
             </main>
         </div>
     </div>
-
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
+    <script>
+        const socket = io();
+    </script>
     <script src="/scripts/chat.js"></script>
 </body>
 </html>

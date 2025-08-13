@@ -20,7 +20,7 @@ const postRegisterController = async (req, res) => {
         const user = await userModel.create({ username, email, password: hashedPassword });
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         res.cookie("token", token);
-        res.status(201).send({ message: "User registered successfully", token });
+        res.redirect('/');
     } catch (error) {
         res.status(500).send("Internal Server Error", error);
     }
@@ -44,17 +44,22 @@ const postLoginController = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     res.cookie("token", token);
-    res.status(200).json({ message: "Login successful", token });
-
+    res.redirect('/');
 };
 
 const getLoginController = (req, res) => {
     res.render('login');
 };
 
+const logOutController = (req, res) => {
+    res.clearCookie("token");
+    res.redirect('/auth/login');
+};
+
 module.exports = {
     getRegisterController,
     postRegisterController,
     getLoginController,
-    postLoginController
+    postLoginController,
+    logOutController
 };
