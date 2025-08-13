@@ -54,7 +54,9 @@
         active.className = "chat-list__item is-active";
         chatList.prepend(active);
       }
-      active.textContent = "New chat";
+  active.textContent = "New chat";
+  // Allow setting a new title on next message
+  delete active.dataset.titleLocked;
     }
   });
 
@@ -100,7 +102,7 @@
     if (!thread) return;
     thread.scrollTo({ top: thread.scrollHeight, behavior: "smooth" });
   }
-
+  // AI reply simulation
   function aiReply(text) {
     const thinking = bubble("assistant", "Thinking…");
     thread?.appendChild(thinking);
@@ -127,10 +129,14 @@
 
   function addRecentChatPreview(text) {
     if (!chatList) return;
-    const firstItem = chatList.querySelector(".chat-list__item.is-active");
-    // Create a preview entry for the current chat title
-    const preview = text.trim().slice(0, 40) || "New message";
-    if (firstItem) firstItem.textContent = preview;
+  const firstItem = chatList.querySelector(".chat-list__item.is-active");
+  if (!firstItem) return;
+  // Only set once per chat: use data-titleLocked flag
+  if (firstItem.dataset.titleLocked === "true") return;
+  const firstLine = text.trim().split("\n")[0];
+  const preview = firstLine.slice(0, 60) || "New chat";
+  firstItem.textContent = preview;
+  firstItem.dataset.titleLocked = "true";
   }
 
   function send(text) {

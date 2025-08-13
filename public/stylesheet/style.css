@@ -63,7 +63,8 @@ body {
 /* shortcuts removed for cleaner sidebar */
 
 .sidebar__section {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 .sidebar__section-title {
@@ -73,8 +74,10 @@ body {
 }
 .chat-list {
   list-style: none;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 6px;
+  height: fit-content;
 }
 .chat-list__item {
   padding: 10px 12px;
