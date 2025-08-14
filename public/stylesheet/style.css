@@ -67,6 +67,12 @@ body {
   flex-direction: column;
   gap: 8px;
 }
+.actions{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
 .sidebar__section-title {
   font-size: 0.9rem;
   color: var(--muted);
